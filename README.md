@@ -1,2 +1,11 @@
-# module-10-challenge
-Object-Oriented Programming Challenge: Team Profile Generator
+# Object-Oriented Programming Challenge: Team Profile Generator
+
+## Description
+
+## Installation
+
+## Usage
+
+## Testing
+
+## Credits
