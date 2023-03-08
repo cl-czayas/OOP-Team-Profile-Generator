@@ -5,9 +5,7 @@ const inquirer = require("inquirer");
 const fs = require("fs");
 team = [];
 
-function runApp () {
-
-    function createTeam () {
+function createTeam () {
         inquirer.prompt([{
         type: "list",
         message: "What type of employee would you like to add to your team?",
@@ -28,7 +26,7 @@ function runApp () {
             break;
 
             default: 
-            generateHTML();
+            generateFile();
             }
         })
     }
@@ -134,9 +132,131 @@ function addEngineer() {
         createTeam();
         });
     }
+
+
+
+const generateHTML = (team) => {
+    const manager = team.find((member) => member instanceof Manager);
+
+// == MANAGER CARD HTML STARTS ==
+    const managerCard = `
+
+    <div class="card">
+    <div class="card-content">
+        <p class="title">
+            ${manager.getName()}
+        </p>
+        <p class="subtitle">
+            ${manager.getRole()}
+        </p>
+
+        <footer class="card-footer">
+            <p class="card-footer-item">
+            <span>
+                ID: ${manager.getId()}
+            </span>
+            </p>
+
+            <p class="card-footer-item">
+            <span>
+                Email: <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a>                </span>
+            </p>
+
+            <p class="card-footer-item">
+            <span>
+            Office Number: ${manager.getOfficeNumber()}               
+            </span>
+            </p>
+        </footer>
+    </div>
+</div>
+`;
+
+// == TEAM CARDS HTML STARTS ==
+    const teamCards = team
+        .filter((member) => !(member instanceof Manager))
+        .map((member) => {
+        let info = "";
+        if (member instanceof Engineer) {
+            info = `GitHub: <a href="https://github.com/${member.getGithub()}" target="_blank">${member.getGithub()}</a>`;
+        } else if (member instanceof Intern) {
+            info = `School: ${member.getSchool()}`;
+        }
+        return `
+        <div class="card">
+        <div class="card-content">
+            <p class="title">
+                ${member.getName()}
+            </p>
+            <p class="subtitle">
+                ${member.getRole()}
+            </p>
+
+            <footer class="card-footer">
+                <p class="card-footer-item">
+                <span>
+                    ID: ${member.getId()}
+                </span>
+                </p>
+
+                <p class="card-footer-item">
+                <span>
+                    Email: <a href="mailto:${member.getEmail()}">${member.getEmail()}</a>                </span>
+                </p>
+
+                <p class="card-footer-item">
+                <span>
+                ${info}                
+                </span>
+                </p>
+            </footer>
+        </div>
+    </div>
+`;
+}).join("");
+// == FULL HTML STARTS ==
+    return `
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Team Profile</title>
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma-rtl.min.css">
+        </head>
+
+        <body>        
+        <main>
+            <section class="hero is-info">
+                <div class="hero-body">
+                <p class="title">
+                    My Team
+                </p>
+                <p class="subtitle">
+                    This is our contact info!
+                </p>
+                </div>
+            </section>
+
+            <section class='content'>
+                <div>
+                    ${managerCard}
+                    ${teamCards}
+                </div>
+            </section>
+        </main>
+        </body>
+    </html>
+`;
+};
+
+function generateFile() {
+    const htmlData = generateHTML(team);
+    fs.writeFile("./dist/teamPage.html", htmlData, (err) =>
+        err ? console.error(err) : console.log("Your HTML file has been generated!")
+    );
 }
 
-// const generateHTML =
-
-runApp();
+createTeam();
 

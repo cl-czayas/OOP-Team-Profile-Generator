@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/cl-czayas/module-10-challenge#readme",
   "dependencies": {
+    "bulma": "^0.9.4",
     "inquirer": "^8.2.4",
     "jest": "^29.3.1"
   }
