@@ -24,7 +24,7 @@ describe('Intern Function', () => {
     
     it('returns office number', () => {
         expect(person.officeNumber).toBe(officeNumber)
-        expect(person.getofficeNumber()).toBe("405");
+        expect(person.getOfficeNumber()).toBe("405");
     });
 
     it('returns role', () => {
